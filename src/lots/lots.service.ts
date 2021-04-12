@@ -1,26 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLotDto } from './dto/create-lot.dto';
-import { UpdateLotDto } from './dto/update-lot.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Lot, Prisma } from '@prisma/client';
 
 @Injectable()
 export class LotsService {
-  create(createLotDto: CreateLotDto) {
-    return 'This action adds a new lot';
+  constructor( private readonly prisma:PrismaService){}
+
+  async lot(id:number):Promise<Lot>{
+    return this.prisma.lot.findUnique({
+      where:{id:id},
+      include:{
+        sticker:true,
+        parking: true,        
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all lots`;
+  async lots():Promise<Lot[]>{
+    return this.prisma.lot.findMany({
+      include:{
+        sticker:true,
+        parking: true, 
+      }
+    });
+  }
+  async createLot(data:Prisma.LotCreateInput):Promise<Lot>{
+    return this.prisma.lot.create({
+      data,
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lot`;
+  async updateLot(id:number,data:Prisma.LotUpdateInput):Promise<Lot>{
+    return this.prisma.lot.update({
+      data,
+      where:{id:id}
+    })
+  }
+  async deleteLot(id:number):Promise<Lot>{
+    return this.prisma.lot.delete({
+      where:{id:id}
+    })
   }
 
-  update(id: number, updateLotDto: UpdateLotDto) {
-    return `This action updates a #${id} lot`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} lot`;
-  }
 }
