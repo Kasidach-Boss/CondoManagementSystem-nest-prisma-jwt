@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
+import { Room, Prisma } from '@prisma/client';
 
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
-  @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.create(createRoomDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.roomsService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomsService.findOne(+id);
+  async getRoom (@Param('id') id:number):Promise<Room>{
+    return this.roomsService.room(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.update(+id, updateRoomDto);
+  @Get('list')
+  async getRooms () :Promise<Room[]>{
+    return this.roomsService.rooms();
+  }
+
+  @Post('register')
+  async createRoom(@Body() data: Prisma.RoomCreateInput):Promise<Room>{
+    return this.roomsService.createRoom(data);
+  }
+
+  @Put(':id')
+  async updateRoom(
+    @Param('id') id:number,
+    @Body() data: Prisma.RoomUpdateInput,
+    ):Promise<Room>{
+    return this.roomsService.updateRoom(+id,data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomsService.remove(+id);
+  async deleteRoom(@Param('id') id:number):Promise<Room>{
+    return this.roomsService.deleteRoom(+id);
   }
+  
 }

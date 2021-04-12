@@ -1,34 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { StickersService } from './stickers.service';
-import { CreateStickerDto } from './dto/create-sticker.dto';
-import { UpdateStickerDto } from './dto/update-sticker.dto';
+import { Sticker, Prisma } from '@prisma/client';
+
 
 @Controller('stickers')
 export class StickersController {
   constructor(private readonly stickersService: StickersService) {}
 
-  @Post()
-  create(@Body() createStickerDto: CreateStickerDto) {
-    return this.stickersService.create(createStickerDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.stickersService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stickersService.findOne(+id);
+  async getSticker (@Param('id') id:number):Promise<Sticker>{
+    return this.stickersService.sticker(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStickerDto: UpdateStickerDto) {
-    return this.stickersService.update(+id, updateStickerDto);
+  @Get('list')
+  async getStickers () :Promise<Sticker[]>{
+    return this.stickersService.stickers();
+  }
+
+  @Post('register')
+  async createSticker(@Body() data: Prisma.StickerCreateInput):Promise<Sticker>{
+    return this.stickersService.createSticker(data);
+  }
+
+  @Put(':id')
+  async updateSticker(
+    @Param('id') id:number,
+    @Body() data: Prisma.StickerUpdateInput,
+    ):Promise<Sticker>{
+    return this.stickersService.updateSticker(+id,data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stickersService.remove(+id);
+  async deleteSticker(@Param('id') id:number):Promise<Sticker>{
+    return this.stickersService.deleteSticker(+id);
   }
 }

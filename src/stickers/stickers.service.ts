@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStickerDto } from './dto/create-sticker.dto';
-import { UpdateStickerDto } from './dto/update-sticker.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Sticker, Prisma } from '@prisma/client';
 
 @Injectable()
 export class StickersService {
-  create(createStickerDto: CreateStickerDto) {
-    return 'This action adds a new sticker';
+ constructor(private prisma: PrismaService) {}
+
+  async sticker(id:number): Promise<Sticker> {
+    return this.prisma.sticker.findUnique({
+      where: {id:id},
+    });
   }
 
-  findAll() {
-    return `This action returns all stickers`;
+  async stickers(): Promise<Sticker[]> {
+    return this.prisma.sticker.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sticker`;
+  async createSticker(data: Prisma.StickerCreateInput): Promise<Sticker> {
+    return this.prisma.sticker.create({
+      data,
+    });
   }
 
-  update(id: number, updateStickerDto: UpdateStickerDto) {
-    return `This action updates a #${id} sticker`;
+  async updateSticker(id:number, data:Prisma.StickerUpdateInput): Promise<Sticker> {
+    
+    return this.prisma.sticker.update({
+      data,
+      where:{id:id},
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sticker`;
+  async deleteSticker(id:number): Promise<Sticker> {
+    return this.prisma.sticker.delete({
+      where:{id:id},
+    });
   }
+
+
 }

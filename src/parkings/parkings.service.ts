@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { CreateParkingDto } from './dto/create-parking.dto';
-import { UpdateParkingDto } from './dto/update-parking.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Parking, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ParkingsService {
-  create(createParkingDto: CreateParkingDto) {
-    return 'This action adds a new parking';
+  constructor( private readonly prisma:PrismaService){}
+
+  async parking(id:number):Promise<Parking>{
+    return this.prisma.parking.findUnique({
+      where:{id:id},
+      include:{
+        car:true,
+        lot: true,        
+      }
+    })
   }
 
-  findAll() {
-    return `This action returns all parkings`;
+  async parkings():Promise<Parking[]>{
+    return this.prisma.parking.findMany({
+      include:{
+        car:true,
+        lot: true, 
+      }
+    });
+  }
+  async createParking(data:Prisma.ParkingCreateInput):Promise<Parking>{
+    return this.prisma.parking.create({
+      data,
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} parking`;
+  async updateParking(id:number,data:Prisma.ParkingUpdateInput):Promise<Parking>{
+    return this.prisma.parking.update({
+      data,
+      where:{id:id}
+    })
   }
-
-  update(id: number, updateParkingDto: UpdateParkingDto) {
-    return `This action updates a #${id} parking`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} parking`;
+  async deleteParking(id:number):Promise<Parking>{
+    return this.prisma.parking.delete({
+      where:{id:id}
+    })
   }
 }

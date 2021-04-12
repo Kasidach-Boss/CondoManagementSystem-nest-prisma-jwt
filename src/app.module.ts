@@ -13,6 +13,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { ParkingsModule } from './parkings/parkings.module';
 
 
+
 @Module({
    imports: [UsersModule, AuthModule, LotsModule, CarsModule, StickersModule, RoomsModule, ParkingsModule],
    controllers: [AppController],

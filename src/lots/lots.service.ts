@@ -11,7 +11,8 @@ export class LotsService {
       where:{id:id},
       include:{
         sticker:true,
-        parking: true,        
+        parking: true,
+
       }
     })
   }

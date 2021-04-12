@@ -1,34 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { ParkingsService } from './parkings.service';
-import { CreateParkingDto } from './dto/create-parking.dto';
-import { UpdateParkingDto } from './dto/update-parking.dto';
+import { Parking, Prisma } from '@prisma/client';
 
 @Controller('parkings')
 export class ParkingsController {
   constructor(private readonly parkingsService: ParkingsService) {}
 
-  @Post()
-  create(@Body() createParkingDto: CreateParkingDto) {
-    return this.parkingsService.create(createParkingDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.parkingsService.findAll();
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.parkingsService.findOne(+id);
+  async getParking (@Param('id') id:number):Promise<Parking>{
+    return this.parkingsService.parking(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateParkingDto: UpdateParkingDto) {
-    return this.parkingsService.update(+id, updateParkingDto);
+  @Get('list')
+  async getParkings () :Promise<Parking[]>{
+    return this.parkingsService.parkings();
+  }
+
+  @Post('register')
+  async createParking(@Body() data: Prisma.ParkingCreateInput):Promise<Parking>{
+    return this.parkingsService.createParking(data);
+  }
+
+  @Put(':id')
+  async updateParking(
+    @Param('id') id:number,
+    @Body() data: Prisma.ParkingUpdateInput,
+    ):Promise<Parking>{
+    return this.parkingsService.updateParking(+id,data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.parkingsService.remove(+id);
+  async deleteParking(@Param('id') id:number):Promise<Parking>{
+    return this.parkingsService.deleteParking(+id);
   }
 }
