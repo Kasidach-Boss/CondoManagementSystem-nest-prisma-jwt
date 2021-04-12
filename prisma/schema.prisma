@@ -11,10 +11,70 @@ generator client {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  password String
-  gender String
-  age Int
+  id          Int           @default(autoincrement()) @id
+  email       String        @unique
+  name        String?
+  password    String        @unique
+  gender      Gender
+  age         Int
+  car         Car?
+  Room        Room?
+}
+
+enum Gender{
+  MALE
+  FEMALE
+}
+
+model Lot {
+  id          Int           @default(autoincrement()) @id
+  floor       String
+  sticker     Sticker       @relation(fields:[stickerId], references:[id]) 
+  stickerId   Int
+  parking     Parking[]
+ 
+
+}
+
+model Sticker{
+  id          Int           @default(autoincrement()) @id
+  type        Type
+  expire      DateTime
+  lot         Lot?
+  cars        Car[]           
+  
+ 
+}
+
+enum Type{
+  GREEN
+  YELLOW
+  RED
+}
+
+model Car {
+  id          Int           @default(autoincrement()) @id
+  brand       String
+  model       String
+  carPlate    String
+  color       String
+  user        User          @relation(fields:[userId], references:[id])  
+  userId      Int  
+  parking     Parking?     
+  stickers    Sticker[]      
+}
+
+model Room{
+  id          Int           @default(autoincrement()) @id
+  label       String
+  user        User          @relation(fields:[userId], references:[id])
+  userId      Int
+}
+model Parking{
+  id          Int           @default(autoincrement()) @id
+  lot         Lot           @relation(fields:[lotId], references:[id])
+  lotId       Int
+  car         Car           @relation(fields:[carId], references:[id])
+  carId       Int
+  createdAt   DateTime      @default(now())
 }
