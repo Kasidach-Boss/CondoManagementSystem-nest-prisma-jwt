@@ -4,11 +4,17 @@ import {
   User,
   Prisma
 } from '@prisma/client';
+// import * as bcrypt from 'bcrypt';
+// import { Observable, from } from 'rxjs';
+// import { AuthService } from '../auth/auth.service';
 
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+      private prisma: PrismaService,
+     
+    ) {}
 
   async user(id:number): Promise<User | null> {
     return this.prisma.user.findUnique({
@@ -33,6 +39,9 @@ export class UsersService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
+    // const saltOrRounds = 10;
+    // const hashPassword = await bcrypt.hash(data.password,saltOrRounds);
+    // data.password = hashPassword;
     return this.prisma.user.create({
       data,
     });
@@ -59,4 +68,9 @@ export class UsersService {
       
     })
   }
+
+  
+
+  
+  
 }

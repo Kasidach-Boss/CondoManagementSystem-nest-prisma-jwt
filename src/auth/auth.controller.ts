@@ -4,7 +4,7 @@ import { UsersService } from '../users/users.service';
 import { Prisma, User as UserModel } from '@prisma/client';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
-
+// import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController{
@@ -21,6 +21,7 @@ export class AuthController{
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req) {
+      
       return this.authService.login(req.user);
     }
   

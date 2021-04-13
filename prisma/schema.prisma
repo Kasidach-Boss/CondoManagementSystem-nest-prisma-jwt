@@ -42,7 +42,7 @@ model Lot {
 model Sticker{
   id          Int           @default(autoincrement()) @id
   type        Type
-  expire      DateTime      //exaple 2013-09-05T10:10:02Z
+  expire      DateTime      //example 2013-09-05T10:10:02Z
   lot         Lot[]          
   car         Car           @relation(fields: [carId], references:[id])    
   carId       Int      
