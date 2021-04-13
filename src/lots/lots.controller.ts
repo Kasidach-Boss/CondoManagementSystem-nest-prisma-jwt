@@ -13,7 +13,7 @@ export class LotsController {
     return this.lotsService.lot(+id);
   }
 
-  @Get('list')
+  @Get()
   async getLots():Promise<Lot[]>{
     return this.lotsService.lots();
   }

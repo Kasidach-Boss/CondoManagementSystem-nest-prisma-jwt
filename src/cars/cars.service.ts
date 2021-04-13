@@ -12,7 +12,7 @@ export class CarsService {
         include:{
           user: true,
           parking: true,
-          stickers: true,
+          sticker: true,
         }
       })
     }
@@ -22,7 +22,7 @@ export class CarsService {
         include:{
           user: true,
           parking: true,
-          stickers: true,
+          sticker: true,
         }
       });
     }

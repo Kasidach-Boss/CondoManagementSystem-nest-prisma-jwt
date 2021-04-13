@@ -12,7 +12,7 @@ export class CarsController {
     return this.carsService.car(+id);
   }
 
-  @Get('list')
+  @Get()
   async getCars () :Promise<Car[]>{
     return this.carsService.cars();
   }

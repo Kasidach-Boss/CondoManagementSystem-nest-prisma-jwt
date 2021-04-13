@@ -9,11 +9,20 @@ export class StickersService {
   async sticker(id:number): Promise<Sticker> {
     return this.prisma.sticker.findUnique({
       where: {id:id},
+      include:{
+        lot:true,
+        car:true
+      }
     });
   }
 
   async stickers(): Promise<Sticker[]> {
-    return this.prisma.sticker.findMany();
+    return this.prisma.sticker.findMany({
+      include:{
+        lot:true,
+        car:true
+      }
+    });
   }
 
   async createSticker(data: Prisma.StickerCreateInput): Promise<Sticker> {

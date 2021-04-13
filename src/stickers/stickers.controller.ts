@@ -12,7 +12,7 @@ export class StickersController {
     return this.stickersService.sticker(+id);
   }
 
-  @Get('list')
+  @Get()
   async getStickers () :Promise<Sticker[]>{
     return this.stickersService.stickers();
   }

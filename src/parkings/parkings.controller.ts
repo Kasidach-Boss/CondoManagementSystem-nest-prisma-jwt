@@ -11,7 +11,7 @@ export class ParkingsController {
     return this.parkingsService.parking(+id);
   }
 
-  @Get('list')
+  @Get()
   async getParkings () :Promise<Parking[]>{
     return this.parkingsService.parkings();
   }

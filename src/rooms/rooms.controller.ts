@@ -11,7 +11,7 @@ export class RoomsController {
     return this.roomsService.room(+id);
   }
 
-  @Get('list')
+  @Get()
   async getRooms () :Promise<Room[]>{
     return this.roomsService.rooms();
   }

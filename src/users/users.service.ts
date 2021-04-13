@@ -13,11 +13,23 @@ export class UsersService {
   async user(id:number): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: {id:id},
+      include:{
+        car:true,
+        Room:true,
+        parking:true,
+        
+      }
     });
   }
 
   async users(): Promise<User[]> {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      include:{
+        car:true,
+        Room:true,
+        parking:true,
+      }
+    });
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {

@@ -19,6 +19,7 @@ model User {
   age         Int
   car         Car?
   Room        Room?
+  parking     Parking[]
 }
 
 enum Gender{
@@ -31,7 +32,9 @@ model Lot {
   floor       String
   sticker     Sticker       @relation(fields:[stickerId], references:[id]) 
   stickerId   Int
-  parking     Parking[]
+  parking     Parking?
+  
+  
  
 
 }
@@ -39,9 +42,10 @@ model Lot {
 model Sticker{
   id          Int           @default(autoincrement()) @id
   type        Type
-  expire      DateTime
-  lot         Lot?
-  cars        Car[]           
+  expire      DateTime      //exaple 2013-09-05T10:10:02Z
+  lot         Lot[]          
+  car         Car           @relation(fields: [carId], references:[id])    
+  carId       Int      
   
  
 }
@@ -60,8 +64,9 @@ model Car {
   color       String
   user        User          @relation(fields:[userId], references:[id])  
   userId      Int  
-  parking     Parking?     
-  stickers    Sticker[]      
+  parking     Parking?
+  sticker     Sticker[]
+       
 }
 
 model Room{
@@ -70,11 +75,14 @@ model Room{
   user        User          @relation(fields:[userId], references:[id])
   userId      Int
 }
+
 model Parking{
   id          Int           @default(autoincrement()) @id
   lot         Lot           @relation(fields:[lotId], references:[id])
   lotId       Int
   car         Car           @relation(fields:[carId], references:[id])
   carId       Int
+  user        User           @relation(fields:[userId], references:[id])
+  userId       Int
   createdAt   DateTime      @default(now())
 }

@@ -23,7 +23,7 @@ export class UsersController {
     async getUser(@Param('id') id:number):Promise<UserModel>{
       return this.usersService.user(+id);
     }
-    @Get('users')
+    @Get()
     async getUsers():Promise<UserModel[]>{
       return this.usersService.users();
     }
