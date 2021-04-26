@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
   User,
   Prisma
 } from '@prisma/client';
-// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 // import { Observable, from } from 'rxjs';
 // import { AuthService } from '../auth/auth.service';
+
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class UsersService {
       where: {id:id},
       include:{
         car:true,
-        Room:true,
+        room:true,
         parking:true,
         
       }
@@ -32,7 +33,7 @@ export class UsersService {
     return this.prisma.user.findMany({
       include:{
         car:true,
-        Room:true,
+        room:true,
         parking:true,
       }
     });
@@ -42,6 +43,8 @@ export class UsersService {
     // const saltOrRounds = 10;
     // const hashPassword = await bcrypt.hash(data.password,saltOrRounds);
     // data.password = hashPassword;
+    var hashPass = await this.hashPassword(data.password)
+    data.password = hashPass;
     return this.prisma.user.create({
       data,
     });
@@ -68,7 +71,21 @@ export class UsersService {
       
     })
   }
+  
+  async hashPassword(password:string){
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+    return hash;
 
+  }
+
+  async comparePassword(password:string){
+    
+    
+    return await bcrypt.compare(password,password);
+
+    
+  }
   
 
   

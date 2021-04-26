@@ -18,7 +18,7 @@ model User {
   gender      Gender
   age         Int
   car         Car?
-  Room        Room?
+  room        Room?
   parking     Parking[]
 }
 
@@ -45,7 +45,8 @@ model Sticker{
   expire      DateTime      //example 2013-09-05T10:10:02Z
   lot         Lot[]          
   car         Car           @relation(fields: [carId], references:[id])    
-  carId       Int      
+  carId       Int
+  keycard_no  String      
   
  
 }

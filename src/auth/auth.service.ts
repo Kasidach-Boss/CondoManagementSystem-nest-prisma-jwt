@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Body} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import { Prisma } from '.prisma/client';
 // import { from, Observable } from 'rxjs';
 // import {User,Prisma} from '@prisma/client';
 
@@ -14,12 +15,18 @@ export class AuthService {
 
     async validateUser(username:string, pass:string):Promise<any>{
         const user = await this.usersService.findUserByEmail(username) // username is email
-        
-        if (user && user.password === pass){
+       
+        const match = await this.usersService.comparePassword(pass);
+        console.log(pass);
+        // console.log(match);
+            if (user && user.password === pass ){
             
-            const { password, ...result } = user;
-            return result;
-        }
+                const { password, ...result } = user;
+            
+                return result;
+            }
+        
+        
         return null;
     }
 
