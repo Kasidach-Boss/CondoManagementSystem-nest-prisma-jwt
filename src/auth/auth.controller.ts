@@ -1,7 +1,7 @@
 import { Controller, Body, Post, UseGuards, Request, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { Prisma, User as UserModel } from '@prisma/client';
+import { Prisma, User as UserModel, User } from '@prisma/client';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 // import * as bcrypt from 'bcrypt';
@@ -21,8 +21,8 @@ export class AuthController{
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req) {
-      await this.usersService.findUserByEmail(req.email)
-      
+      // await this.usersService.findUserByEmail(req.email)
+      // console.log(this.authService.login(req.email));
       return this.authService.login(req.user);
     }
   
